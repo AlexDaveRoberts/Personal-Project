@@ -1,0 +1,33 @@
+%main.container.col-md-10.mt-5
+  - if notice
+    .alert-info.rounded.p-3.mb-3
+      = notice
+  - if alert
+    .alert-warning.rounded.p-3.mb-3
+      = alert
+  - if devise_error_messages!
+    .alert-warning.rounded.p-3.mb-3
+      %ul#register-messages
+        - @messages.each do |msg|
+          %li= msg
+
+  %h2 Register
+  #devise-form
+    = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+      .field.devise-field
+        = f.label :first_name
+        = f.text_field :first_name, autofocus: true, autocomplete: "off"
+      .field.devise-field
+        = f.label :last_name
+        = f.text_field :last_name, autocomplete: "off"
+      .field.devise-field
+        = f.label :email
+        = f.email_field :email, autocomplete: "off"
+      .field.devise-field
+        = f.label :password, value: "Password (#{@minimum_password_length} characters minimum)"
+        = f.password_field :password, autocomplete: "off"
+      .field.devise-field
+        = f.label :password_confirmation
+        = f.password_field :password_confirmation, autocomplete: "off"
+      .actions.devise-submit
+        = f.submit "Register"

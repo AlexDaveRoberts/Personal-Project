@@ -1,0 +1,7 @@
+{
+  "name": "FaceApp",
+  "private": true,
+  "dependencies": {
+    "lightbox2": "^2.10.0"
+  }
+}

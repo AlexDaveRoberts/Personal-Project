@@ -1,0 +1,46 @@
+%main.container.col-md-10.mt-5
+  - if notice
+    .alert-info.rounded.p-3.mb-3
+      = notice
+  - if alert
+    .alert-warning.rounded.p-3.mb-3
+      = alert
+  - if devise_error_messages!
+    .alert-warning.rounded.p-3.mb-3
+      %ul#register-messages
+        - @messages.each do |msg|
+          %li= msg
+
+  %h2 Edit Account
+  #devise-form2
+    = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
+      .field.devise-field
+        = f.label :first_name
+        = f.text_field :first_name, autofocus: true, autocomplete: "off"
+      .field.devise-field
+        = f.label :last_name
+        = f.text_field :last_name, autocomplete: "off"
+      .field.devise-field
+        = f.label :email
+        = f.email_field :email, autocomplete: "off"
+      - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+        %div
+          Currently waiting confirmation for: #{resource.unconfirmed_email}
+      .field.devise-field
+        = f.label :password, value: "Password (#{@minimum_password_length} characters minimum)"
+      .field.devise-field
+        %i (leave blank if you don't want to change it)
+        = f.password_field :password, autocomplete: "off"
+      .field.devise-field
+        = f.label :password_confirmation
+        = f.password_field :password_confirmation, autocomplete: "off"
+      .field.devise-field
+        = f.label :current_password
+      .field.devise-field
+        %i (we need your current password to confirm your changes)
+        = f.password_field :current_password, autocomplete: "off"
+      .actions.devise-submit.devise-submit2
+        = f.submit "Update"
+    %h3.mt-5 Delete Account
+    %p
+      By clicking on Delete Account, all of your information stored by Name tbc will be permanently deleted. #{button_to "Delete Account", registration_path(resource_name), data: { confirm: "Are you sure you want to permanently delete your account?" }, method: :delete, class: "delete-submit"}

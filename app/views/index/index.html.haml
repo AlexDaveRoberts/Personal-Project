@@ -1,0 +1,29 @@
+%main.container.col-md-10.mt-5
+  - if notice
+    .alert-info.rounded.p-3.mb-3
+      = notice
+  - if alert
+    .alert-warning.rounded.p-3.mb-3
+      = alert
+
+  %h2 Login
+  #devise-form
+    = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+      .field.devise-field
+        = f.label :email
+        = f.email_field :email, autofocus: true, autocomplete: "off"
+      .field.devise-field
+        = f.label :password
+        = f.password_field :password, autocomplete: "off"
+      - if devise_mapping.rememberable?
+        .field.devise-remember
+          = f.check_box :remember_me
+          = f.label :remember_me
+      .actions.devise-submit
+        = f.submit "Login"
+    #devise-links
+      - if devise_mapping.registerable? && controller_name != 'registrations'
+        = link_to "Register", new_registration_path(resource_name)
+        |
+      - if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations'
+        = link_to "Forgot Password", new_password_path(resource_name)

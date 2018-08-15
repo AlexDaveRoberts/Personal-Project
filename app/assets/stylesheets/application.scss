@@ -1,0 +1,345 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ */
+
+@import 'bootstrap';
+@import 'font-awesome';
+
+$green: rgb(82, 190, 128);
+$bgGrey: rgb(236, 240, 241);
+$red: rgb(229, 57, 53);
+$linkBlue: rgb(52, 152, 219);
+
+body {
+  background: $bgGrey;
+}
+
+header {
+  background: $green;
+  padding: 1em;
+}
+
+.navLinks {
+  text-align: right;
+}
+
+.navLinks a, .navLinks a:visited, .navLinks a:active, {
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+}
+
+.navLinks a:hover {
+  color: rgb(255, 255, 255);
+}
+
+main {
+  padding: 1em 0em;
+  background: rgb(255, 255, 255);
+  border: 0.05em solid rgb(208, 211, 212);
+  border-radius: 0.5em;
+  margin-bottom: 1em;
+  font-family: lato, sans-serif;
+}
+
+.separator {
+  border-right: 0.01em solid rgba(0,0,0,0.8);
+}
+
+#uploadOptions {
+  text-align: center;
+  margin-bottom: 2em;
+}
+
+.upload-option {
+  margin-top: 0.5em;
+  padding: 0.5em 0.75em;
+  cursor: pointer;
+  background: darken($green, 20%);
+  &:hover{background: darken($green, 17%)}
+  color: #fff;
+  border: none;
+  width: 7em;
+  text-align: center;
+  display: inline-block;
+}
+
+#local {
+  background: rgb(144, 148, 151);
+}
+
+.upload-form {
+  color: #fff;
+  margin: auto;
+  display: table;
+  text-align: center;
+}
+
+#uploadForm {
+  margin: 3em auto;
+}
+
+#file-upload, #hiddenURL, #hiddenForm {
+  display: none;
+}
+
+label[for='file-upload'] {
+  padding: 0.5em;
+  display: inline-block;
+  cursor: pointer;
+  background: darken($green, 20%);
+  &:hover{background: darken($green, 17%)}
+  min-width: 4.5em;
+  text-align: center;
+}
+
+#filename {
+  padding: 0.5em;
+  float: left;
+  min-width: 200px;
+  max-width: 500px;
+  white-space: nowrap;
+  overflow: hidden;
+  background:darken($green, 10%);
+}
+
+#file-submit, #snapshot {
+  margin-top: 0.5em;
+  padding: 0.5em 0.75em;
+  cursor: pointer;
+  background: darken($green, 20%);
+  &:hover{background: darken($green, 17%)}
+  color: #fff;
+  border: none;
+  min-width: 4.5em;
+  text-align: center;
+}
+
+#snapshot {
+  margin-top: 1em;
+}
+
+.uploadedStyle {
+  text-align: center;
+}
+
+.uploadedThumbnail {
+  border-radius: 0.5em;
+  cursor: pointer;
+  transition: 0.3s;
+  margin: 0.8em 0.5em 0em 0em;
+}
+
+.uploadedThumbnail:hover {
+  opacity: 0.7;
+}
+
+.delete-icon {
+  position: absolute;
+  color: $red;
+  font-size: 1.25em;
+}
+
+.delete-icon:hover {
+  color: rgb(255, 255, 255);
+}
+
+.delete-main {
+  margin: 0.5em 0em 0em -1.5em;
+}
+
+.delete1 {
+  margin: 0.5em 0em 0em -1.75em;
+}
+
+.delete2 {
+  margin: 0.5em 0em 0em -1.5em;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.9);
+}
+
+.modal-content {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 800px;
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+.videoContainer {
+  text-align: center;
+}
+
+@keyframes zoom {
+  from {transform:scale(0)}
+  to {transform:scale(1)}
+}
+
+.closeImage, .closeWebcam {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #909497;
+  font-size: 40px;
+  transition: 0.3s;
+}
+
+.closeImage:hover, .closeImage:focus, .closeWebcam:hover, .closeWebcam:focus {
+  color: #fff;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 700px){
+  .modal-content {
+    width: 100%;
+  }
+}
+
+#devise-form {
+  width: 15em;
+}
+
+#devise-form2 {
+  width: 25em;
+}
+
+.devise-field input {
+  border: 0.05em solid #000;
+  padding: 0.25em;
+  width: 15em;
+  margin: 0.25em 0em 0.5em 0em;
+  display: block;
+}
+
+.devise-field input:focus {
+  outline: none !important;
+  border: 0.05em solid $green;
+}
+
+.devise-remember {
+  margin-top: 0.5em;
+}
+
+.devise-submit {
+  text-align: right;
+}
+
+.devise-submit2 {
+  margin-right: 10em;
+}
+
+.devise-submit3 {
+  text-align: left;
+}
+
+.devise-submit input, .delete-submit {
+  margin-top: 0.5em;
+  padding: 0.5em 1.5em;
+  cursor: pointer;
+  background: darken($green, 20%);
+  &:hover{background: darken($green, 17%)}
+  color: #fff;
+  border: none;
+  min-width: 4.5em;
+  text-align: center;
+}
+
+.delete-submit {
+  background: darken($red, 20%);
+  &:hover{background: darken($red, 17%)}
+}
+
+#devise-links {
+  margin-top: 1em;
+}
+
+#devise-links a, #devise-links a:visited, #devise-links a:active, {
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+}
+
+#devise-links a:hover {
+  color: $linkBlue
+}
+
+#register-messages {
+  list-style: square;
+  margin: 0em 0em 0em 1em;
+  padding: 0;
+}
+
+.attrElement {
+  background: rgb(226, 229, 228);
+  padding: 3em 1em;
+  width: 10em;
+  height: 13em;
+  text-align: center;
+  border-radius: 0.25em;
+  margin: 0em 0.5em 0.5em 0em;
+  float: left;
+}
+
+.longerText {
+  padding: 1.5em 1em;
+}
+
+.longerText2 {
+  padding: 1em 0.5em;
+}
+
+.attrElementIcon {
+  width: 4em;
+  height: 4em;
+  margin-bottom: 1em;
+}
+
+.improveResults {
+  clear: both;
+}
+
+.improveText {
+  clear: both;
+  font-size: 1.1em;
+}
+
+@media only screen and (max-width: 1199px){
+  .firstCol {
+    padding: 0em 1.5em;
+  }
+
+  .secondCol {
+    padding: 0em;
+    margin: 2em 1.5em 0em 1.5em;
+    border-top: 0.01em solid rgba(0,0,0,0.8);
+  }
+
+  .secondCol h3 {
+    padding-top: 0.75em;
+  }
+
+  .separator {
+    border-right: none;
+  }
+}

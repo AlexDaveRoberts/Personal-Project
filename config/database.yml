@@ -1,0 +1,19 @@
+defaults: &defaults
+  adapter: postgresql
+  username: alex
+  password: database
+  host: localhost
+  min_messages: WARNING
+  encoding: utf8
+
+development:
+  <<: *defaults
+  database: face_app_development
+
+test: &test
+  <<: *defaults
+  database: face_app_test
+
+production:
+  <<: *defaults
+  database: face_app_production

@@ -1,0 +1,231 @@
+- if user_signed_in?
+  %main.container.col-10.mt-5
+    - if notice
+      .alert-info.rounded.p-3.mb-3
+        = notice
+    - if alert
+      .alert-warning.rounded.p-3.mb-3
+        = alert
+    - if session[:upload_success]
+      .alert-success.rounded.p-3.mb-3
+        Your photo has been successfully uploaded.
+      - session[:upload_success] = false
+    - elsif session[:delete_success]
+      .alert-success.rounded.p-3.mb-3
+        Your photo has been successfully deleted.
+      - session[:delete_success] = false
+    - if @upload.errors.any?
+      - @upload.errors.full_messages.each do |message|
+        .alert-danger.rounded.p-3.mb-3
+          = message
+
+    .row
+      .col-xl-7.separator.firstCol
+        %h3 Upload a photo
+
+        #uploadOptions
+          - if session[:upload_first]
+            .upload-option#local_upload_first
+              = fa_icon("file-image-o", text: "Local")
+          - else
+            .upload-option#local
+              = fa_icon("file-image-o", text: "Local")
+          .upload-option#webcam
+            = fa_icon("camera", text: "Webcam")
+
+        - if session[:upload_first]
+          #hiddenForm
+            #choosePhoto.mb-5 Choose a photo to scan:
+            = form_for @upload, html: {class: 'upload-form'} do |f|
+              .field
+                %span#filename Select a photo...
+                %label{for: "file-upload"} Browse
+                = f.file_field(:image, id: "file-upload")
+              .field
+                = f.button fa_icon("upload", text: "Upload"), id: "file-submit"
+          - session[:upload_first] = false
+        - else
+          #uploadForm
+            #choosePhoto.mb-5 Choose a photo to scan:
+            = form_for @upload, html: {class: 'upload-form'} do |f|
+              .field
+                %span#filename Select a photo...
+                %label{for: "file-upload"} Browse
+                = f.file_field(:image, id: "file-upload")
+              .field
+                = f.button fa_icon("upload", text: "Upload"), id: "file-submit"
+
+        #uploadWebcam
+          = form_tag("/snapshot", method: "post", id: "snapshotForm") do
+            %input{id: "hiddenURL", name: "url"}
+
+        - @user_uploads = Upload.where(user_id: current_user.id)
+        - if @user_uploads.last.present?
+          %h4 Uploaded photo:
+          .uploadedStyle
+            %img.hiddenFullImage{src: @user_uploads.last.image_url, style: 'display:none;', class: @user_uploads.last.id, name: "fullImageURL"}
+            %img.uploadedThumbnail{src: @user_uploads.last.image_url(:uploaded), id: @user_uploads.last.id}
+              = link_to upload_path(id: @user_uploads.last.id), method: :delete, class: 'delete-icon delete-main' do
+                = fa_icon "times"
+
+          - unless @user_uploads.count == 1
+            %h4.mt-5 Previous photos:
+            .uploadedStyle
+              - @user_uploads.all[0..-2].reverse.each do |upload|
+                - unless Upload.first == upload
+                  %img.hiddenFullImage{src: upload.image_url, style: 'display:none;', class: upload.id}
+                  %img.uploadedThumbnail{src: upload.image_url(:thumb), style: 'display:inline;', id: upload.id}
+                    = link_to upload_path(id: upload.id), method: :delete, class: 'delete-icon delete1' do
+                      = fa_icon "times"
+                - else
+                  %img.hiddenFullImage{src: upload.image_url, style: 'display:none;', class: upload.id}
+                  %img.uploadedThumbnail{src: upload.image_url(:thumb), style: 'display:inline;', id: upload.id}
+                    = link_to upload_path(id: upload.id), method: :delete, class: 'delete-icon delete2' do
+                      = fa_icon "times"
+
+        #fullImage.modal
+          %span.closeImage= fa_icon "times"
+          %img#uploadedFull.modal-content
+
+        #fullWebcam.modal
+          %span.closeWebcam= fa_icon "times"
+          .videoContainer
+            %video#video{autoplay: "", height: "768", width: "1024"}
+          .videoContainer
+            %button{id: "snapshot"}
+              #{fa_icon "camera-retro"} Take a Snapshot
+
+      .col.secondCol
+        %h3 Welcome #{current_user.first_name} #{current_user.last_name}
+        #elementsContainer
+          - if @gender.present?
+            %p Your latest photo shows the following:
+            .attrElement
+              %img{src: "genders.svg", class: 'attrElementIcon'}
+              %p.attrP #{@gender.capitalize}
+            .attrElement
+              %img{src: "cake.svg", class: 'attrElementIcon'}
+              %p.attrP #{@age.to_i} Years Old
+
+            - if @smile > 0.5
+              .attrElement
+                %img{src: "smile.svg", class: 'attrElementIcon'}
+                %p.attrP You have a great smile!
+
+            - if @happiness > 0.5
+              .attrElement.longerText
+                %img{src: "happy.svg", class: 'attrElementIcon'}
+                %p.attrP It seems that you are in a very happy mood.
+            - elsif @anger > 0.5
+              .attrElement.longerText
+                %img{src: "angry.svg", class: 'attrElementIcon'}
+                %p.attrP It seems that you are very angry about something.
+            - elsif @contempt > 0.5
+              .attrElement.longerText
+                %img{src: "contempt.svg", class: 'attrElementIcon'}
+                %p.attrP It seems that you are very contempt today.
+            - elsif @disgust > 0.5
+              .attrElement.longerText
+                %img{src: "digusted.svg", class: 'attrElementIcon'}
+                %p.attrP It seems that you are very digusted about something.
+            - elsif @fear > 0.25
+              .attrElement.longerText
+                %img{src: "fearful.svg", class: 'attrElementIcon'}
+                %p.attrP It seems that you are very fearful about something.
+            - elsif @neutral > 0.5
+              .attrElement.longerText2
+                %img{src: "neutral.svg", class: 'attrElementIcon'}
+                %p.attrP Are you deep in thought? You have a very neutral expression.
+            - elsif @sadness > 0.5
+              .attrElement.longerText
+                %img{src: "unhappy.svg", class: 'attrElementIcon'}
+                %p.attrP Are you okay? You seem very upset today.
+            - elsif @surprise > 0.5
+              .attrElement.longerText
+                %img{src: "surprised.svg", class: 'attrElementIcon'}
+                %p.attrP Wow, you seem very surprised today.
+
+            - if @beard > 0.5
+              .attrElement
+                %img{src: "beard.svg", class: 'attrElementIcon'}
+                %p.attrP Nice beard, bro
+            - elsif @moustache > 0.25 && @beard < 0.5
+              .attrElement
+                %img{src: "moustache.svg", class: 'attrElementIcon'}
+                %p.attrP Nice moustache
+            - elsif @beard > 0.25
+              .attrElement
+                %img{src: "beard1.svg", class: 'attrElementIcon'}
+                %p.attrP Nice trimmed beard
+
+            - if @glasses == "ReadingGlasses"
+              .attrElement
+                %img{src: "glasses.svg", class: 'attrElementIcon'}
+                %p.attrP Cool glasses
+            - elsif @glasses == "Sunglasses"
+              .attrElement
+                %img{src: "sunglasses.svg", class: 'attrElementIcon'}
+                %p.attrP Cool shades, bro
+
+            - if @accessories == "headwear"
+              .attrElement
+                %img{src: "snapback.svg", class: 'attrElementIcon'}
+                %p.attrP Sweet hat, man
+
+            - if @hair == "black"
+              .attrElement
+                %img{src: "black.svg", class: 'attrElementIcon'}
+                %p.attrP Black Hair
+            - elsif @hair == "brown"
+              .attrElement
+                %img{src: "brown.svg", class: 'attrElementIcon'}
+                %p.attrP Brown Hair
+            - elsif @hair == "red"
+              .attrElement
+                %img{src: "red.svg", class: 'attrElementIcon'}
+                %p.attrP Red Hair
+            - elsif @hair == "blond"
+              .attrElement
+                %img{src: "blond.svg", class: 'attrElementIcon'}
+                %p.attrP Blond Hair
+            - elsif @hair == "gray"
+              .attrElement
+                %img{src: "grey.svg", class: 'attrElementIcon'}
+                %p.attrP Grey Hair
+
+            - if @eyeMakeup == true
+              .attrElement
+                %img{src: "mascara.svg", class: 'attrElementIcon'}
+                %p.attrP Mascara / Eyeliner
+            - if @lipMakeup == true
+              .attrElement
+                %img{src: "lipstick.svg", class: 'attrElementIcon'}
+                %p.attrP Lipstick
+
+        .improveResults.pt-4
+        - if @blur == "high" || (@blur == "medium" && @blurValue > 0.5) || @exposure == "overExposure" && @exposureValue > 0.5 || @noise == "high" || @noise == "medium"
+          %h5.pb-2 To improve your results:
+          - if @blur == "high" || (@blur == "medium" && @blurValue > 0.5)
+            .attrElement
+              %img{src: "focus.svg", class: 'attrElementIcon'}
+              %p.attrP Blurry photo
+          - if @exposure == "overExposure" && @exposureValue > 0.5
+            .attrElement
+              %img{src: "exposure.svg", class: 'attrElementIcon'}
+              %p.attrP Overexposed photo
+          - if @noise == "high" || @noise == "medium"
+            .attrElement
+              %img{src: "night.svg", class: 'attrElementIcon'}
+              %p.attrP Photo contains a lot of noise
+
+        .improveText.pt-1
+          - if @blur == "high"
+            %p Your latest photo is extremely blurry, therefore the results provided may not be accurate. To guarantee valid results please ensure that the photo uploaded is clear and the subject is in focus.
+          - elsif @blur == "medium" && @blurValue > 0.5
+            %p Your latest photo is slightly blurry, therefore some of the results provided may not be accurate. To guarantee valid results please ensure that the photo uploaded is clear and the subject is in focus.
+          - if @exposure == "overExposure" && @exposureValue > 0.5
+            %p Your latest photo is overexposed with too much light, therefore some of the results provided may not be accurate. To guarantee valid results please ensure that the photo uploaded is not over exposed to light, so the subject can be viewed clearly.
+          - if @noise == "high" || @noise == "medium"
+            %p Your latest photo contains a lot of noise, therefore some of the results provided may not be accurate. To guarantee valid results please ensure that the photo uploaded is taken in a well lit environment, so the subject can be viewed clearly.
+
+  = javascript_include_tag 'uploads'

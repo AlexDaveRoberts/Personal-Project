@@ -1,0 +1,21 @@
+%main.container.col-md-10.mt-5
+  - if notice
+    .alert-info.rounded.p-3.mb-3
+      = notice
+  - if alert
+    .alert-warning.rounded.p-3.mb-3
+      = alert
+  - if devise_error_messages!
+    .alert-warning.rounded.p-3.mb-3
+      %ul#register-messages
+        - @messages.each do |msg|
+          %li= msg
+
+  %h2 Forgot Password
+  #devise-form
+    = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
+      .field.devise-field
+        = f.label :email
+        = f.email_field :email, autofocus: true, autocomplete: "off"
+      .actions.devise-submit.devise-submit3
+        = f.submit "Send password reset email"
