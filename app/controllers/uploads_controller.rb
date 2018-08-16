@@ -22,9 +22,9 @@ class UploadsController < ApplicationController
       request = Net::HTTP::Post.new(uri.request_uri)
 
       request['Ocp-Apim-Subscription-Key'] = 'ecb202e4074246e795ca9f0d1c9577d6'
-      request['Content-Type'] = 'application/json'
+      request['Content-Type'] = 'application/octet-stream'
 
-      request.body = "{\"url\": \"" + @latestImage + "\"}"
+      request.body = File.read("#{Rails.root}/public/" + @latestImage)
 
       response = Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
           http.request(request)
