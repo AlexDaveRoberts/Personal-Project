@@ -42,6 +42,23 @@ header {
   color: rgb(255, 255, 255);
 }
 
+header h2 {
+  padding-top: 0.4em;
+  float: left;
+}
+
+header h2.flipped {
+  transform: scale(-1, 1);
+  float: left;
+}
+
+.titleIcon {
+  width: 4em;
+  height: 4em;
+  float: left;
+  margin-right: 0.5em;
+}
+
 main {
   padding: 1em 0em;
   background: rgb(255, 255, 255);

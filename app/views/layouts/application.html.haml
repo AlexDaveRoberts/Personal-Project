@@ -10,7 +10,9 @@
     %header
       .row
         .col
-          %h1 Name tbc
+          %img{src: "mirror.svg", class: 'titleIcon'}
+          %h2 mirror
+          %h2.flipped &#x202e; | mirror
         .col.navLinks
           - if user_signed_in?
             = link_to current_user.email, edit_user_registration_path
